@@ -5,11 +5,15 @@
        x:Class="TrainTracker.App.AppShell"
        FlowDirection="RightToLeft"
        Shell.NavBarIsVisible="False"
-       Shell.TabBarIsVisible="False"
+       Shell.TabBarBackgroundColor="{StaticResource Ticket}"
+       Shell.TabBarTitleColor="{StaticResource Ink}"
+       Shell.TabBarUnselectedColor="{StaticResource Muted}"
        BackgroundColor="{StaticResource Ink}">
 
-    <!-- التابات التانية (البحث / البروفايل) هتتضاف في الخطوات الجاية، ساعتها نشيل TabBarIsVisible -->
+    <!-- تفاصيل الرحلة والخريطة صفحات بتتفتح من فوق (routes متسجلة في AppShell.xaml.cs) -->
     <TabBar>
-        <ShellContent Title="الرئيسية" ContentTemplate="{DataTemplate pages:HomePage}" />
+        <ShellContent Title="الرئيسية" Route="home" ContentTemplate="{DataTemplate pages:HomePage}" />
+        <ShellContent Title="البحث" Route="search" ContentTemplate="{DataTemplate pages:SearchPage}" />
+        <ShellContent Title="حسابي" Route="profile" ContentTemplate="{DataTemplate pages:ProfilePage}" />
     </TabBar>
 </Shell>

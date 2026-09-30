@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TrainTracker.App.Pages.MapPage"
+             Title="الخريطة"
+             FlowDirection="RightToLeft">
+
+    <Grid RowDefinitions="Auto,*">
+        <VerticalStackLayout Grid.Row="0" BackgroundColor="{StaticResource Ink}" Spacing="0">
+            <Grid Padding="22,14,22,16" ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="2">
+                    <Label Text="الخريطة" Style="{StaticResource Display}" TextColor="White" />
+                    <Label x:Name="InfoLabel" Text="بنحمّل الخريطة..." TextColor="#AFC0CE" FontSize="14" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="رجوع" VerticalOptions="Start" Clicked="OnBack" />
+            </Grid>
+            <BoxView HeightRequest="4" Color="{StaticResource Signal}" />
+        </VerticalStackLayout>
+
+        <WebView x:Name="Web" Grid.Row="1" />
+    </Grid>
+</ContentPage>

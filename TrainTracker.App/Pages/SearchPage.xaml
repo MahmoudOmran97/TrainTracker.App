@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:TrainTracker.App.Models"
+             x:Class="TrainTracker.App.Pages.SearchPage"
+             Title="البحث"
+             FlowDirection="RightToLeft">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <VerticalStackLayout Grid.Row="0" BackgroundColor="{StaticResource Ink}" Spacing="0">
+            <VerticalStackLayout Padding="22,16,22,18" Spacing="2">
+                <Label Text="دوّر على قطر" Style="{StaticResource Display}" TextColor="White" />
+                <Label Text="اختار محطة المغادرة والوصول" TextColor="#AFC0CE" FontSize="14" />
+            </VerticalStackLayout>
+            <BoxView HeightRequest="4" Color="{StaticResource Signal}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1" Padding="16,14,16,6" Spacing="8">
+            <Entry x:Name="FromEntry" Placeholder="من محطة" FontFamily="Plex"
+                   Focused="OnEntryFocused" TextChanged="OnTextChanged" />
+            <Entry x:Name="ToEntry" Placeholder="إلى محطة" FontFamily="Plex"
+                   Focused="OnEntryFocused" TextChanged="OnTextChanged" />
+            <Button Text="دوّر" Clicked="OnSearch" />
+        </VerticalStackLayout>
+
+        <Grid Grid.Row="2">
+            <!-- اقتراحات المحطات أثناء الكتابة -->
+            <CollectionView x:Name="Suggestions" IsVisible="False" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:Station">
+                        <Border Margin="16,3" Padding="14,12" StrokeThickness="1" Stroke="{StaticResource Rule}"
+                                BackgroundColor="{StaticResource Ticket}" StrokeShape="RoundRectangle 8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSuggestionTapped" />
+                            </Border.GestureRecognizers>
+                            <Label Text="{Binding NameAr}" FontFamily="PlexMedium" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- نتايج البحث -->
+            <CollectionView x:Name="Results" IsVisible="False" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:SearchResultItem">
+                        <Border Margin="16,6" Padding="16,12" StrokeThickness="1" Stroke="{StaticResource Rule}"
+                                BackgroundColor="{StaticResource Ticket}" StrokeShape="RoundRectangle 8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnResultTapped" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="4">
+                                <Label Text="{Binding TitleText}" FontFamily="PlexBold" FontSize="17" />
+                                <Border Grid.Column="1" Padding="10,3" StrokeThickness="1.5"
+                                        Stroke="{Binding StatusFg}" BackgroundColor="{Binding StatusBg}"
+                                        StrokeShape="RoundRectangle 4">
+                                    <Label Text="{Binding StatusText}" TextColor="{Binding StatusFg}"
+                                           FontFamily="PlexBold" FontSize="12" />
+                                </Border>
+                                <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding TimesText}"
+                                       Style="{StaticResource Time}" FlowDirection="LeftToRight"
+                                       HorizontalOptions="Start" />
+                                <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding MetaText}"
+                                       Style="{StaticResource Caption}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label x:Name="Hint" Padding="32,60" HorizontalTextAlignment="Center"
+                   Style="{StaticResource Caption}" Text="اكتب اسم المحطة وهتظهرلك اقتراحات." />
+            <ActivityIndicator x:Name="Spinner" IsRunning="False" IsVisible="False"
+                               Color="{StaticResource Ink}" VerticalOptions="Center" HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

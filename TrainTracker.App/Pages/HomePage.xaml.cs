@@ -26,6 +26,12 @@ public partial class HomePage : ContentPage
         Refresh.IsRefreshing = false;
     }
 
+    private async void OnCardTapped(object? sender, TappedEventArgs e)
+    {
+        if ((sender as BindableObject)?.BindingContext is TripCardItem item)
+            await Shell.Current.GoToAsync($"trip?id={item.TripId}");
+    }
+
     private async void OnRetry(object? sender, EventArgs e) => await LoadAsync(showSpinner: true);
 
     private async Task LoadAsync(bool showSpinner)
@@ -49,11 +55,11 @@ public partial class HomePage : ContentPage
                 ? $"{items.Count} رحلة النهارده، و{running} منهم على الطريق"
                 : $"{items.Count} رحلة النهارده";
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             TripsList.ItemsSource = null;
             SummaryLabel.Text = "مفيش اتصال";
-            ErrorDetail.Text = $"شغّل الـ API وتأكد إن العنوان صح:\n{ApiService.BaseUrl}";
+            ErrorDetail.Text = $"{ex.GetType().Name}: {ex.Message}\n{ApiService.BaseUrl}";
             ErrorView.IsVisible = true;
         }
         finally

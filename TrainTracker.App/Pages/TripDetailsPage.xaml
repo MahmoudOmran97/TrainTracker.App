@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:TrainTracker.App.Models"
+             x:Class="TrainTracker.App.Pages.TripDetailsPage"
+             Title="تفاصيل الرحلة"
+             FlowDirection="RightToLeft">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <VerticalStackLayout Grid.Row="0" BackgroundColor="{StaticResource Ink}" Spacing="0">
+            <Grid Padding="22,14,22,16" ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Spacing="0">
+                    <Label x:Name="TypeLabel" Style="{StaticResource Caption}" TextColor="#AFC0CE" />
+                    <Label x:Name="NumberLabel" Style="{StaticResource Display}" TextColor="White" />
+                    <Label x:Name="RouteLabel" TextColor="#AFC0CE" FontSize="14" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="رجوع" VerticalOptions="Start" Clicked="OnBack" />
+            </Grid>
+            <BoxView HeightRequest="4" Color="{StaticResource Signal}" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,14,16,24" Spacing="12">
+
+                <!-- وصل فين -->
+                <Border Padding="18,16" StrokeThickness="1" Stroke="{StaticResource Rule}"
+                        BackgroundColor="{StaticResource Ticket}" StrokeShape="RoundRectangle 8">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="وصل فين؟" Style="{StaticResource Caption}" />
+                        <Label x:Name="WhereLabel" FontFamily="PlexBold" FontSize="20" />
+                        <Label x:Name="WhereSub" Style="{StaticResource Caption}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button x:Name="ReportBtn" Text="أنا في القطر — ابعت موقعي" Clicked="OnReport" />
+                    <Button Grid.Column="1" Text="على الخريطة" Clicked="OnMap" />
+                </Grid>
+
+                <Label x:Name="ErrorLabel" IsVisible="False" Style="{StaticResource Caption}"
+                       HorizontalTextAlignment="Center" />
+                <ActivityIndicator x:Name="Spinner" IsRunning="False" IsVisible="False"
+                                   Color="{StaticResource Ink}" HorizontalOptions="Center" />
+
+                <!-- جدول المحطات -->
+                <Label Text="المحطات" FontFamily="PlexBold" FontSize="16" Margin="0,6,0,0" />
+                <VerticalStackLayout x:Name="StopsLayout" Spacing="0">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="m:StopItem">
+                            <Grid ColumnDefinitions="22,*,Auto" ColumnSpacing="10" Padding="0,9">
+                                <Border WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
+                                        HorizontalOptions="Center" StrokeShape="Ellipse" StrokeThickness="0"
+                                        BackgroundColor="{Binding DotColor}" />
+                                <Label Grid.Column="1" Text="{Binding Name}" TextColor="{Binding NameColor}"
+                                       FontFamily="{Binding NameFont}" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding TimeText}" Style="{StaticResource Time}"
+                                       FlowDirection="LeftToRight" VerticalOptions="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

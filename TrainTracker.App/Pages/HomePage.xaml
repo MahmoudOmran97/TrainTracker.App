@@ -33,6 +33,9 @@
                         <!-- الكارت = تذكرة: جزء رئيسي + خط تقطيع + كعب -->
                         <Border Margin="16,7" StrokeThickness="1" Stroke="{StaticResource Rule}"
                                 BackgroundColor="{StaticResource Ticket}" StrokeShape="RoundRectangle 8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCardTapped" />
+                            </Border.GestureRecognizers>
                             <Grid RowDefinitions="Auto,Auto,24,Auto">
 
                                 <!-- رقم القطر + الختم -->
