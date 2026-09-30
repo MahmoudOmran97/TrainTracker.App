@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:pages="clr-namespace:TrainTracker.App.Pages"
+       x:Class="TrainTracker.App.AppShell"
+       FlowDirection="RightToLeft"
+       Shell.NavBarIsVisible="False"
+       Shell.TabBarIsVisible="False"
+       BackgroundColor="{StaticResource Ink}">
+
+    <!-- التابات التانية (البحث / البروفايل) هتتضاف في الخطوات الجاية، ساعتها نشيل TabBarIsVisible -->
+    <TabBar>
+        <ShellContent Title="الرئيسية" ContentTemplate="{DataTemplate pages:HomePage}" />
+    </TabBar>
+</Shell>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:m="clr-namespace:TrainTracker.App.Models"
+             x:Class="TrainTracker.App.Pages.HomePage"
+             Title="الرئيسية"
+             FlowDirection="RightToLeft"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- الهيدر: أزرق إشارة + شريط كهرماني زي لافتات المحطات -->
+        <VerticalStackLayout Grid.Row="0" BackgroundColor="{StaticResource Ink}" Spacing="0">
+            <VerticalStackLayout Padding="22,16,22,18" Spacing="2">
+                <Label Text="قطارات النهارده" Style="{StaticResource Display}" TextColor="White" />
+                <Label x:Name="SummaryLabel" Text="بنحمّل الرحلات..." TextColor="#AFC0CE" FontSize="14" />
+            </VerticalStackLayout>
+            <BoxView HeightRequest="4" Color="{StaticResource Signal}" />
+        </VerticalStackLayout>
+
+        <!-- القائمة -->
+        <RefreshView Grid.Row="1" x:Name="Refresh" Refreshing="OnRefreshing" RefreshColor="{StaticResource Ink}">
+            <CollectionView x:Name="TripsList" SelectionMode="None" Margin="0,8,0,16">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout Padding="32,80" Spacing="6" HorizontalOptions="Center">
+                        <Label Text="مفيش رحلات النهارده" FontFamily="PlexBold" FontSize="18" HorizontalTextAlignment="Center" />
+                        <Label Text="اسحب الشاشة لتحت عشان تحدّث." Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:TripCardItem">
+                        <!-- الكارت = تذكرة: جزء رئيسي + خط تقطيع + كعب -->
+                        <Border Margin="16,7" StrokeThickness="1" Stroke="{StaticResource Rule}"
+                                BackgroundColor="{StaticResource Ticket}" StrokeShape="RoundRectangle 8">
+                            <Grid RowDefinitions="Auto,Auto,24,Auto">
+
+                                <!-- رقم القطر + الختم -->
+                                <Grid Grid.Row="0" Padding="18,16,18,0" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                    <VerticalStackLayout Spacing="0">
+                                        <Label Text="{Binding TypeText}" Style="{StaticResource Caption}" />
+                                        <Label Text="{Binding TrainNumber}" Style="{StaticResource Display}" />
+                                    </VerticalStackLayout>
+                                    <Border Grid.Column="1" VerticalOptions="Start" Rotation="-3" Padding="10,4"
+                                            StrokeThickness="1.5" Stroke="{Binding StatusStroke}"
+                                            BackgroundColor="{Binding StatusBg}" StrokeShape="RoundRectangle 4">
+                                        <Label Text="{Binding StatusText}" TextColor="{Binding StatusFg}"
+                                               FontFamily="PlexBold" FontSize="13" />
+                                    </Border>
+                                </Grid>
+
+                                <!-- المسار: من ← إلى (خط السكة بين النقطتين) -->
+                                <Grid Grid.Row="1" Padding="18,16,18,4" ColumnDefinitions="14,*,Auto"
+                                      RowDefinitions="Auto,26,Auto" ColumnSpacing="12">
+                                    <BoxView Grid.Column="0" Grid.RowSpan="3" WidthRequest="2" Margin="0,16"
+                                             HorizontalOptions="Center" Color="{StaticResource Ink}" />
+
+                                    <Border Grid.Row="0" Grid.Column="0" WidthRequest="14" HeightRequest="14"
+                                            VerticalOptions="Center" StrokeShape="Ellipse" StrokeThickness="2.5"
+                                            Stroke="{StaticResource Ink}" BackgroundColor="{StaticResource Ticket}" />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding From}" FontFamily="PlexMedium"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding DepartureText}"
+                                           Style="{StaticResource Time}" VerticalOptions="Center" />
+
+                                    <Border Grid.Row="2" Grid.Column="0" WidthRequest="14" HeightRequest="14"
+                                            VerticalOptions="Center" StrokeShape="Ellipse" StrokeThickness="0"
+                                            BackgroundColor="{StaticResource Ink}" />
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding To}" FontFamily="PlexMedium"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Row="2" Grid.Column="2" Text="{Binding ArrivalText}"
+                                           Style="{StaticResource Time}" VerticalOptions="Center" />
+                                </Grid>
+
+                                <!-- خط التقطيع + الحتة المقروضة على الجنبين (LTR عشان الاتجاهين يتماثلوا) -->
+                                <Grid Grid.Row="2" FlowDirection="LeftToRight">
+                                    <Label Text="{x:Static m:TripCardItem.Perforation}" TextColor="{StaticResource Rule}"
+                                           FontSize="14" LineBreakMode="NoWrap" MaxLines="1"
+                                           VerticalOptions="Center" Margin="16,0" />
+                                    <Border WidthRequest="20" HeightRequest="20" HorizontalOptions="Start"
+                                            VerticalOptions="Center" TranslationX="-10" StrokeShape="Ellipse"
+                                            StrokeThickness="0" BackgroundColor="{StaticResource Platform}" />
+                                    <Border WidthRequest="20" HeightRequest="20" HorizontalOptions="End"
+                                            VerticalOptions="Center" TranslationX="10" StrokeShape="Ellipse"
+                                            StrokeThickness="0" BackgroundColor="{StaticResource Platform}" />
+                                </Grid>
+
+                                <!-- الكعب: التأخير + هل الموقع متاح -->
+                                <Grid Grid.Row="3" Padding="18,2,18,14" ColumnDefinitions="*,Auto">
+                                    <Label Text="{Binding StubText}" IsVisible="{Binding HasStub}"
+                                           TextColor="{Binding StubColor}" FontFamily="PlexBold" FontSize="14"
+                                           VerticalOptions="Center" />
+                                    <HorizontalStackLayout Grid.Column="1" Spacing="6" IsVisible="{Binding HasLocation}"
+                                                           VerticalOptions="Center">
+                                        <Border WidthRequest="8" HeightRequest="8" StrokeShape="Ellipse" StrokeThickness="0"
+                                                BackgroundColor="{StaticResource Go}" VerticalOptions="Center" />
+                                        <Label Text="موقعه متاح" Style="{StaticResource Caption}" />
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <!-- تحميل -->
+        <ActivityIndicator x:Name="Spinner" Grid.Row="1" IsRunning="False" IsVisible="False"
+                           Color="{StaticResource Ink}" VerticalOptions="Center" HorizontalOptions="Center" />
+
+        <!-- خطأ اتصال -->
+        <VerticalStackLayout x:Name="ErrorView" Grid.Row="1" IsVisible="False" Spacing="8" Padding="32"
+                             BackgroundColor="{StaticResource Platform}" VerticalOptions="Center">
+            <Label Text="مش قادر يوصل للسيرفر" FontFamily="PlexBold" FontSize="18" HorizontalTextAlignment="Center" />
+            <Label x:Name="ErrorDetail" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+            <Button Text="جرّب تاني" Clicked="OnRetry" HorizontalOptions="Center" Margin="0,12,0,0" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

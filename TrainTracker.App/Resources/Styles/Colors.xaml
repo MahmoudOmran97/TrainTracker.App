@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- لوحة الألوان: لافتات محطات السكة الحديد -->
+    <Color x:Key="Ink">#12263A</Color>
+    <Color x:Key="Platform">#E4EAEC</Color>
+    <Color x:Key="Ticket">#FBFCFC</Color>
+    <Color x:Key="Signal">#F2A900</Color>
+    <Color x:Key="Muted">#5B6F80</Color>
+    <Color x:Key="Rule">#C5D0D6</Color>
+
+    <Color x:Key="Go">#1F7A54</Color>
+    <Color x:Key="GoSoft">#D6EFE2</Color>
+    <Color x:Key="Late">#7A4E00</Color>
+    <Color x:Key="LateSoft">#FBE7B0</Color>
+    <Color x:Key="Stop">#B3261E</Color>
+    <Color x:Key="StopSoft">#F7D9D6</Color>
+    <Color x:Key="Idle">#3D5468</Color>
+    <Color x:Key="IdleSoft">#D5DEE4</Color>
+</ResourceDictionary>
