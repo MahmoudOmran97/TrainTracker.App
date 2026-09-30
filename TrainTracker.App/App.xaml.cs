@@ -6,6 +6,8 @@ public partial class App : Application
     {
         InitializeComponent();
         UserAppTheme = AppTheme.Light; // التصميم مظبوط على الوضع الفاتح بس
-        MainPage = new AppShell();
     }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+        => new Window(new AppShell());
 }
