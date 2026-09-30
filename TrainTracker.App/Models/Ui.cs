@@ -20,6 +20,38 @@ public static class Ui
         _ => ("لسه ماتحركش", C("Idle"), C("IdleSoft")),
     };
 
+
+    // أسماء المحطات اللي جاية من الاستيراد من غير همزات — بنصلحها وقت العرض بس
+    private static readonly Dictionary<string, string> ArWords = new()
+    {
+        ["ابو"] = "أبو", ["ادفو"] = "إدفو", ["اسوان"] = "أسوان", ["اسيوط"] = "أسيوط",
+        ["الاسكندرية"] = "الإسكندرية", ["الاقصر"] = "الأقصر", ["اسنا"] = "إسنا",
+        ["ارمنت"] = "أرمنت", ["احمد"] = "أحمد",
+    };
+
+    /// <summary>اسم المحطة بالإملاء الصح (إدفو، أبو تشت...). ضيف كلمات في ArWords لو لقيت غيرها.</summary>
+    public static string Ar(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return name ?? "";
+        var parts = name.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        for (var i = 0; i < parts.Length; i++)
+            if (ArWords.TryGetValue(parts[i], out var fix)) parts[i] = fix;
+        return string.Join(' ', parts);
+    }
+
+    /// <summary>يحوّل الأرقام العربية (٠-٩) والفارسية لأرقام إنجليزي عشان البحث برقم القطر.</summary>
+    public static string Digits(string? s)
+    {
+        if (string.IsNullOrEmpty(s)) return "";
+        var chars = s.Select(c => c switch
+        {
+            >= '\u0660' and <= '\u0669' => (char)('0' + (c - '\u0660')),
+            >= '\u06F0' and <= '\u06F9' => (char)('0' + (c - '\u06F0')),
+            _ => c
+        });
+        return new string(chars.ToArray());
+    }
+
     // المحطات اللي اتعملت من الاستيراد من غير إحداثيات بتبقى 0,0 — مش بنعتمد عليها
     public static bool HasCoords(double lat, double lon) => !(lat == 0 && lon == 0);
 

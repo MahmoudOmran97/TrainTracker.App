@@ -13,8 +13,8 @@ public class TripCardItem
         TripId = t.TripId;
         TrainNumber = t.TrainNumber;
         TypeText = string.IsNullOrWhiteSpace(t.TrainType) ? "قطر" : t.TrainType!;
-        From = t.From ?? "—";
-        To = t.To ?? "—";
+        From = t.From is null ? "—" : Ui.Ar(t.From);
+        To = t.To is null ? "—" : Ui.Ar(t.To);
         DepartureText = Format(t.Departure);
         ArrivalText = Format(t.Arrival);
         HasLocation = t.LastLatitude is not null && t.LastLongitude is not null;

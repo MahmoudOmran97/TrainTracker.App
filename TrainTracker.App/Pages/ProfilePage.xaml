@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:c="clr-namespace:TrainTracker.App.Controls"
              x:Class="TrainTracker.App.Pages.ProfilePage"
              Title="حسابي"
              FlowDirection="RightToLeft">
+    <Grid RowDefinitions="*,Auto">
 
-    <Grid RowDefinitions="Auto,*">
+    <Grid Grid.Row="0" RowDefinitions="Auto,*">
         <VerticalStackLayout Grid.Row="0" BackgroundColor="{StaticResource Ink}" Spacing="0">
             <VerticalStackLayout Padding="22,16,22,18" Spacing="2">
                 <Label Text="حسابي" Style="{StaticResource Display}" TextColor="White" />
@@ -39,5 +41,7 @@
                 </Border>
             </VerticalStackLayout>
         </ScrollView>
+    </Grid>
+        <c:BottomBar Grid.Row="1" Active="profile" />
     </Grid>
 </ContentPage>

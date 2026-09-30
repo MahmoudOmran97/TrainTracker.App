@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             x:Class="TrainTracker.App.Controls.BottomBar"
+             FlowDirection="RightToLeft">
+
+    <!-- شريط عايم بلون الإشارة، والتاب النشط كبسولة كهرماني زي نور القطر -->
+    <Border Margin="16,4,16,14" Padding="6" BackgroundColor="{StaticResource Ink}"
+            StrokeThickness="0" StrokeShape="RoundRectangle 30">
+        <Border.Shadow>
+            <Shadow Brush="Black" Opacity="0.28" Radius="16" Offset="0,6" />
+        </Border.Shadow>
+
+        <Grid x:Name="Bar" ColumnDefinitions="*,*,*" ColumnSpacing="4" HeightRequest="56">
+
+            <Border x:Name="HomeItem" Grid.Column="0" StrokeThickness="0" StrokeShape="RoundRectangle 24"
+                    BackgroundColor="Transparent">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTap" CommandParameter="home" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                    <!-- أيقونة قطر (واجهة القطر بالأنوار والقضبان) -->
+                    <shapes:Path x:Name="HomeIcon" WidthRequest="24" HeightRequest="24" Aspect="Uniform"
+                                 StrokeThickness="1.8" StrokeLineCap="Round" StrokeLineJoin="Round"
+                                 Data="M6,3 L18,3 A2,2 0 0 1 20,5 L20,15 A2,2 0 0 1 18,17 L6,17 A2,2 0 0 1 4,15 L4,5 A2,2 0 0 1 6,3 Z M4,10 L20,10 M8,13.5 L8.01,13.5 M16,13.5 L16.01,13.5 M8,17 L6,21 M16,17 L18,21" />
+                    <Label x:Name="HomeText" Text="الرئيسية" FontFamily="PlexBold" FontSize="14"
+                           TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border x:Name="SearchItem" Grid.Column="1" StrokeThickness="0" StrokeShape="RoundRectangle 24"
+                    BackgroundColor="Transparent">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTap" CommandParameter="search" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                    <shapes:Path x:Name="SearchIcon" WidthRequest="24" HeightRequest="24" Aspect="Uniform"
+                                 StrokeThickness="1.8" StrokeLineCap="Round" StrokeLineJoin="Round"
+                                 Data="M4,11 A7,7 0 1 0 18,11 A7,7 0 1 0 4,11 Z M16,16 L21,21" />
+                    <Label x:Name="SearchText" Text="البحث" FontFamily="PlexBold" FontSize="14"
+                           TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <Border x:Name="ProfileItem" Grid.Column="2" StrokeThickness="0" StrokeShape="RoundRectangle 24"
+                    BackgroundColor="Transparent">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTap" CommandParameter="profile" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                    <shapes:Path x:Name="ProfileIcon" WidthRequest="24" HeightRequest="24" Aspect="Uniform"
+                                 StrokeThickness="1.8" StrokeLineCap="Round" StrokeLineJoin="Round"
+                                 Data="M8,8 A4,4 0 1 0 16,8 A4,4 0 1 0 8,8 Z M4,21 C4,16.5 7.6,14 12,14 C16.4,14 20,16.5 20,21" />
+                    <Label x:Name="ProfileText" Text="حسابي" FontFamily="PlexBold" FontSize="14"
+                           TextColor="{StaticResource Ink}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
+    </Border>
+</ContentView>

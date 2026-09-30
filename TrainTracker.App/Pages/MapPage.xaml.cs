@@ -42,13 +42,13 @@ public partial class MapPage : ContentPage
             _payload = JsonSerializer.Serialize(new
             {
                 route = stops.Select(s => new[] { s.Longitude, s.Latitude }),
-                stops = stops.Select(s => new { n = s.StationName, c = new[] { s.Longitude, s.Latitude } }),
+                stops = stops.Select(s => new { n = Ui.Ar(s.StationName), c = new[] { s.Longitude, s.Latitude } }),
                 train
             });
 
             InfoLabel.Text = $"قطر {trip.TrainNumber}" + (train is null ? " — لسه مفيش موقع متبلّغ" : "");
             _loaded = true;
-            Web.Source = new HtmlWebViewSource { Html = MapHtml };
+            Web.Source = new HtmlWebViewSource { Html = MapHtml, BaseUrl = ApiService.BaseUrl + "/" };
         }
         catch (Exception ex)
         {
@@ -75,6 +75,8 @@ public partial class MapPage : ContentPage
 <body><div id="map"></div>
 <script>
 var ready = false, pending = null, done = false;
+// بدون الإضافة دي الحروف العربية بتظهر مقطّعة ومعكوسة
+maplibregl.setRTLTextPlugin('https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js', true);
 var map = new maplibregl.Map({
   container: 'map',
   style: 'https://tiles.openfreemap.org/styles/liberty',
@@ -114,7 +116,15 @@ function apply(d) {
   if (!b.isEmpty()) map.fitBounds(b, { padding: 48, duration: 0, maxZoom: 13 });
 }
 
-map.on('load', function () { ready = true; if (pending) apply(pending); });
+map.on('load', function () {
+  // ستايل Liberty بيكتب الاسم اللاتيني + العربي، فبنخليه عربي بس (ولو ناقص بنرجع للاسم الأصلي)
+  map.getStyle().layers.forEach(function (l) {
+    if (l.type !== 'symbol' || !l.layout || !l.layout['text-field']) return;
+    if (JSON.stringify(l.layout['text-field']).indexOf('"name') < 0) return;
+    map.setLayoutProperty(l.id, 'text-field', ['coalesce', ['get', 'name:ar'], ['get', 'name']]);
+  });
+  ready = true; if (pending) apply(pending);
+});
 function setData(d) { if (d === null) return; if (ready) apply(d); else pending = d; }
 </script></body></html>
 """;

@@ -66,7 +66,7 @@ public partial class SearchPage : ContentPage
             .Take(8)
             .ToList();
 
-        Suggestions.ItemsSource = list;
+        Suggestions.ItemsSource = list.Select(s => new StationOption(s, Ui.Ar(s.NameAr))).ToList();
         Suggestions.IsVisible = list.Count > 0;
         if (list.Count > 0) Hint.IsVisible = false;
         else ShowHint("مفيش محطة بالاسم ده.");
@@ -74,11 +74,12 @@ public partial class SearchPage : ContentPage
 
     private void OnSuggestionTapped(object? sender, TappedEventArgs e)
     {
-        if ((sender as BindableObject)?.BindingContext is not Station st) return;
+        if ((sender as BindableObject)?.BindingContext is not StationOption opt) return;
+        var st = opt.Station;
         var entry = _active ?? FromEntry;
 
         _suppress = true;
-        entry.Text = st.NameAr;
+        entry.Text = opt.Display;
         _suppress = false;
 
         if (entry == FromEntry) { _from = st; ToEntry.Focus(); }

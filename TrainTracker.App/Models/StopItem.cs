@@ -4,7 +4,7 @@ public class StopItem
 {
     public StopItem(TripStop s, bool passed, bool isNear)
     {
-        Name = s.StationName;
+        Name = Ui.Ar(s.StationName);
         TimeText = BuildTime(s);
         DotColor = isNear ? Ui.C("Signal") : passed ? Ui.C("Rule") : Ui.C("Ink");
         NameColor = passed && !isNear ? Ui.C("Muted") : Ui.C("Ink");

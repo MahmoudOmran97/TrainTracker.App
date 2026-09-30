@@ -39,7 +39,7 @@ public partial class TripDetailsPage : ContentPage
             NumberLabel.Text = trip.TrainNumber;
             var first = trip.Stops.FirstOrDefault();
             var last = trip.Stops.LastOrDefault();
-            RouteLabel.Text = first is null ? "" : $"{first.StationName}  ←  {last!.StationName}";
+            RouteLabel.Text = first is null ? "" : $"{Ui.Ar(first.StationName)}  ←  {Ui.Ar(last!.StationName)}";
 
             // أقرب محطة للموقع الأخير (بنتجاهل المحطات اللي من غير إحداثيات)
             var nearIndex = -1;
@@ -84,7 +84,7 @@ public partial class TripDetailsPage : ContentPage
         if (nearIndex < 0)
             return ("في بلاغ بموقعه", "إحداثيات المحطات لسه ناقصة فمش قادرين نحدد أقرب محطة.");
 
-        var name = trip.Stops[nearIndex].StationName;
+        var name = Ui.Ar(trip.Stops[nearIndex].StationName);
         var main = nearKm < 1 ? $"عند محطة {name}" : $"قريب من محطة {name} (حوالي {Math.Round(nearKm)} كم)";
         return (main, delay);
     }
